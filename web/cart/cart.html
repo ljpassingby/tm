@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>购物车页面</title>
+
+    <script src="http://how2j.cn/study/js/jquery/2.0.0/jquery.min.js"></script>
+    <link href="http://how2j.cn/study/css/bootstrap/3.3.6/bootstrap.min.css" rel="stylesheet">
+    <script src="http://how2j.cn/study/js/bootstrap/3.3.6/bootstrap.min.js"></script>
+
+    <!--全局样式-->
+    <style>
+        body{
+            font-size: 12px;
+            font-family: Arial;
+        }
+    </style>
+
+    <!--结算栏样式-->
+    <style>
+        div.cartDiv{
+            max-width: 1013px;
+            margin: 10px auto;
+            color: black;
+        }
+        /*购物车上栏*/
+        div.cartTitle button{
+            background-color: #AAAAAA;
+            border: 1px solid #AAAAAA;
+            color: white;
+            width: 53px;
+            height: 25px;
+            border-radius: 2px;
+        }
+        div.cartTitle span.cartTitlePrice{
+            color: #C40000;
+            font-size: 14px;
+            font-weight: bold;
+            margin-left: 5px;
+            margin-right: 3px;
+        }
+        /*购物车页脚*/
+        div.cartFoot{
+            background-color: #E5E5E5;
+            line-height: 50px;
+            margin: 20px 0px;
+            color: black;
+            padding-left: 20px;
+        }
+        div.cartFoot button{
+            background-color: #AAAAAA;
+            border: 1px solid #AAAAAA;
+            color: white;
+            width: 120px;
+            height: 50px;
+            font-size: 20px;
+            text-align: center;
+        }
+        div.cartFoot img.selectAllItem{
+            cursor: pointer;
+        }
+        div.cartFoot span.cartSumNumber{
+            color: #C40000;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        div.cartFoot span.cartSumPrice{
+            color: #C40000;
+            font-size: 20px;
+            font-weight: bold;
+        }
+    </style>
+
+    <!--订单项样式-->
+    <style>
+        table.cartProductTable{
+            width: 100%;
+            font-size: 12px;
+        }
+        /*表头*/
+        table.cartProductTable th{
+            font-weight: normal;
+            color: #3C3C3C;
+            padding: 20px 20px;
+        }
+        table.cartProductTable th.selectAndImage{
+            width: 100px;
+        }
+        table.cartProductTable th.operation{
+            width: 30px;
+        }
+        /*商品行*/
+        tr.cartProductItemTR{
+            border: 1px solid #CCCCCC;
+        }
+        tr.cartProductItemTR td{
+            padding: 20px 20px;
+        }
+        /*选择栏图片*/
+        img.cartProductImg{
+            padding: 1px;
+            border: 1px solid #eeeeee;
+            width: 80px;
+            height: 80px;
+        }
+        img.cartProductItemIfSelected,img.selectAllItem{
+            cursor: pointer;
+        }
+        /*商品信息*/
+        a.cartProductLink{
+            color: #3C3C3C;
+        }
+        a.cartProductLink:hover{
+            color: #C40000;
+            text-decoration: underline;
+        }
+        div.cartProductLinkOutDiv{
+            position: relative; /*让子div.cartProductLinkInnerDiv使用绝对定位*/
+            height: 80px;
+        }
+        div.cartProductLinkInnerDiv{
+            position: absolute;
+            bottom: 0px; /*贴在下面*/
+            height: 20px;
+        }
+        /*单价*/
+        span.cartProductItemOringalPrice{
+            text-decoration: line-through;
+            color: #9C9C9C;
+            display: block;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        span.cartProductItemPromotionPrice{
+            font-family: Arial;
+            font-size: 14px;
+            font-weight: bold;
+            color: #C40000;
+        }
+        /*数量*/
+        div.cartProductChangeNumberDiv{
+            border: 1px solid #E5E5E5;
+            width: 80px;
+        }
+        div.cartProductChangeNumberDiv a{
+            width: 14px;
+            display: inline-block;
+            text-align: center;
+            color: black;
+            text-decoration: none;
+        }
+        div.cartProductChangeNumberDiv input.orderItemNumberSetting{
+            display: inline-block;
+            width: 42px;
+            border: 1px solid #AAAAAA;
+        }
+        /*金额*/
+        span.cartProductItemSmallSumPrice{
+            font-family: Arial;
+            font-size: 14px;
+            font-weight: bold;
+            color: #C40000;
+        }
+        /*操作*/
+        a.deleteOrderItem{
+            color: #999999;
+        }
+        a.deleteOrderItem:hover{
+            text-decoration: none;
+            color: #C40000;
+        }
+    </style>
+</head>
+<body>
+    <div class="cartDiv">
+        <!--结算栏上栏-->
+        <div class="cartTitle pull-right">
+            <span>已选商品  (不含运费)</span>
+            <span class="cartTitlePrice">￥0.00</span>
+            <button class="createOrderButton" style="background-color: rgb(170, 170, 170);" disabled="disabled">结 算</button>
+        </div>
+        <div style="clear: both;"></div>
+        <!--订单项-->
+        <div class="cartProductList">
+            <table class="cartProductTable">
+                <thead>
+                    <tr>
+                        <th class="selectAndImage">
+                            <img src="http://how2j.cn/tmall/img/site/cartNotSelected.png" class="selectAllItem" selectit="false">
+                            全选
+                        </th>
+                        <th>商品信息</th>
+                        <th>单价</th>
+                        <th>数量</th>
+                        <th width="120px">金额</th>
+                        <th class="operation">操作</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="cartProductItemTR" oiid="936">
+                        <!--选择框与图片-->
+                        <td>
+                            <!--只有选择框有这个selectit属性，用于标记是否选择，非常重要-->
+                            <img src="http://how2j.cn/tmall/img/site/cartNotSelected.png" class="cartProductItemIfSelected" oiid="936" selectit="false">
+                            <a href="#nowhere" style="display:none"><img src="http://how2j.cn/tmall/img/site/cartSelected.png"></a>
+                            <img width="40px" src="http://how2j.cn/tmall/img/productSingle_middle/3665.jpg" class="cartProductImg">
+                        </td>
+                        <!--商品信息-->
+                        <td>
+                            <div class="cartProductLinkOutDiv">
+                                <a href="#nowhere" class="cartProductLink">
+                                    美国iRobot扫地机器人吸尘器全自动家用智能扫地机650 天猫电器城
+                                </a>
+                                <div class="cartProductLinkInnerDiv">
+                                    <img title="支持信用卡支付" src="http://how2j.cn/tmall/img/site/creditcard.png">
+                                    <img title="消费者保障服务,承诺7天退货" src="http://how2j.cn/tmall/img/site/7day.png">
+                                    <img title="消费者保障服务,承诺如实描述" src="http://how2j.cn/tmall/img/site/promise.png">
+                                </div>
+                            </div>
+                        </td>
+                        <!--单价-->
+                        <td>
+                            <span class="cartProductItemOringalPrice">￥7580.0</span>
+                            <span class="cartProductItemPromotionPrice">￥5306.0</span>
+                        </td>
+                        <!--数量-->
+                        <td>
+                            <div class="cartProductChangeNumberDiv">
+                                <!--下面两个span用于标记这个商品当前最大的单价与最高可购买数量-->
+                                <span pid="365" class="hidden orderItemStock">75</span>
+                                <span pid="365" class="hidden orderItemPromotePrice">5306.0</span>
+                                <a href="#nowhere" class="numberMinus" pid="365">-</a>
+                                <input type="text" value="1" autocomplete="off" class="orderItemNumberSetting" oiid="936" pid="365">
+                                <a href="#nowhere" class="numberPlus" pid="365" stock="75">+</a>
+                            </div>
+                        </td>
+                        <!--金额-->
+                        <td>
+                            <span pid="365" oiid="936" class="cartProductItemSmallSumPrice">￥5,306.00</span>
+                        </td>
+                        <!--操作-删除-->
+                        <td>
+                            <a href="#nowhere" oiid="936" class="deleteOrderItem">删除</a>
+                        </td>
+                    </tr>
+                    <tr class="cartProductItemTR" oiid="935">
+                        <!--选择框与图片-->
+                        <td>
+                            <!--只有选择框有这个selectit属性，用于标记是否选择，非常重要-->
+                            <img src="http://how2j.cn/tmall/img/site/cartNotSelected.png" class="cartProductItemIfSelected" oiid="935" selectit="false">
+                            <a href="#nowhere" style="display:none"><img src="http://how2j.cn/tmall/img/site/cartSelected.png"></a>
+                            <img width="40px" src="http://how2j.cn/tmall/img/productSingle_middle/8510.jpg" class="cartProductImg">
+                        </td>
+                        <!--商品信息-->
+                        <td>
+                            <div class="cartProductLinkOutDiv">
+                                <a class="cartProductLink" href="#nowhere">阔腿裤三件套装女夏装2016新款大码雪纺时尚休闲气质棉麻九分裤潮</a>
+                                <div class="cartProductLinkInnerDiv">
+                                    <img title="支持信用卡支付" src="http://how2j.cn/tmall/img/site/creditcard.png">
+                                    <img title="消费者保障服务,承诺7天退货" src="http://how2j.cn/tmall/img/site/7day.png">
+                                    <img title="消费者保障服务,承诺如实描述" src="http://how2j.cn/tmall/img/site/promise.png">
+                                </div>
+                            </div>
+                        </td>
+                        <!--单价-->
+                        <td>
+                            <span class="cartProductItemOringalPrice">￥235.0</span>
+                            <span class="cartProductItemPromotionPrice">￥152.75</span>
+                        </td>
+                        <!--数量-->
+                        <td>
+                            <div class="cartProductChangeNumberDiv">
+                                <!--下面两个span用于标记这个商品当前最大的单价与最高可购买数量-->
+                                <span pid="809" class="hidden orderItemStock">17</span>
+                                <span pid="809" class="hidden orderItemPromotePrice">152.75</span>
+                                <a href="#nowhere" class="numberMinus" pid="809">-</a>
+                                <input type="text" value="1" autocomplete="off" class="orderItemNumberSetting" oiid="935" pid="809">
+                                <a href="#nowhere" class="numberPlus" pid="809" stock="17">+</a>
+                            </div>
+                        </td>
+                        <!--金额-->
+                        <td>
+                            <span pid="809" oiid="935" class="cartProductItemSmallSumPrice">
+                            ￥152.75
+                            </span>
+                        </td>
+                        <!--操作-删除-->
+                        <td>
+                            <a href="#nowhere" oiid="935" class="deleteOrderItem">删除</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!--结算栏下栏-->
+        <div class="cartFoot">
+            <img src="http://how2j.cn/tmall/img/site/cartNotSelected.png" class="selectAllItem" selectit="false">
+            <span>全选</span>
+            <div class="pull-right">
+                <span>已选商品 <span class="cartSumNumber">0</span> 件</span>
+                <span>合计 (不含运费): </span>
+                <span class="cartSumPrice">￥0.00</span>
+                <button class="createOrderButton" style="background-color: rgb(170, 170, 170);" disabled="disabled">结 算</button>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //将数字格式转化为钱的格式，如3230394->3,230,394.00
+    function formatMoney(num){
+        num = num.toString().replace(/\$|\,/g,'');
+        if(isNaN(num))
+            num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num*100+0.50000000001);
+        cents = num%100;
+        num = Math.floor(num/100).toString();
+        if(cents<10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length-(1+i))/3); i++)
+            num = num.substring(0,num.length-(4*i+3))+','+
+                num.substring(num.length-(4*i+3));
+        return (((sign)?'':'-') + num + '.' + cents);
+    }
+
+    //判断是否有某个订单项的选择框被打钩，若有，则让两个“结算”按键变色且变为可点，否则结算按键置为不能点击
+    //这个selectit属性只有在选择框这个img标签上才有
+    function syncCreateOrderButton() {
+        var selectAny = false;
+        $("img.cartProductItemIfSelected").each(function () {
+            if("true" == $(this).attr("selectit")){
+                selectAny = true;
+            }
+        });
+        if(selectAny == true){
+            $("button.createOrderButton").css("background-color", "#C40000");
+            $("button.createOrderButton").removeAttr("disabled");
+        }
+        else {
+            $("button.createOrderButton").css("background-color", "#AAAAAA");
+            $("button.createOrderButton").attr("disabled", "disabled");
+        }
+    }
+
+    //同步“全选”按键，即若所有订单项都被选中，则自动让“全选”按键显示被选中
+    function syncSelect() {
+        var selectAll = true;
+        $("img.cartProductItemIfSelected").each(function () {
+            if("false" == $(this).attr("selectit")){
+                selectAll = false;
+            }
+        });
+        if(selectAll == true){
+            $("img.selectAllItem").attr("src", "http://how2j.cn/tmall/img/site/cartSelected.png");
+            $("img.selectAllItem").attr("selectit", "true");
+        }
+        else{
+            $("img.selectAllItem").attr("src", "http://how2j.cn/tmall/img/site/cartNotSelected.png");
+            $("img.selectAllItem").attr("selectit", "false");
+        }
+    }
+
+    //显示被选中的所有商品的总数，以及它们的总价格，调用了formatMoney
+    //获取了每个订单项自己的小计总价与每个订单项对应自身商品的购买数，最后分别求和
+    function calcCartSumPriceAndNumber() {
+        var sum = 0;
+        var totalNumber = 0;
+        $("img.cartProductItemIfSelected[selectit='true']").each(function () {
+            var oiid = $(this).attr("oiid");
+            var price = $("span.cartProductItemSmallSumPrice[oiid="+oiid+"]").text();
+            price = price.replace(/,/g, "");
+            price = price.replace(/￥/g, "");
+            sum += new Number(price);
+            var number = $("input.orderItemNumberSetting[oiid="+oiid+"]").val();
+            totalNumber += new Number(number);
+        });
+        $("span.cartSumPrice").html("￥" + formatMoney(sum));    //给底端总价赋值
+        $("span.cartTitlePrice").html("￥" + formatMoney(sum));  //给顶端总价赋值
+        $("span.cartSumNumber").html(totalNumber);  //给底端的总数赋值
+    }
+
+    //统计每个订单项自己的小计价格，并将其同步更新归并入商品总价，调用了formatMoney,calcCartSumPriceAndNumber
+    function syncPrice(pid, num, price) {
+        var cartProductItemSmallSumPrice = formatMoney(num * price);
+        $(".cartProductItemSmallSumPrice[pid="+pid+"]").html("￥" + cartProductItemSmallSumPrice);
+        calcCartSumPriceAndNumber();
+    }
+</script>
+<!--
+    事件监听，有四种：
+    1. 选中一种商品
+    2. 商品全选
+    3. 鼠标点击增加和减少数量
+    4. 键盘输入直接修改数量
+-->
+<script>
+    $(function () {
+
+
+        //1.选中某一件商品后的动态变化：该订单项的选中项发生变化、总价栏、总商品数栏发生变化
+        $("img.cartProductItemIfSelected").click(function () {
+            var selectit = $(this).attr("selectit");
+            //当商品本身没被选中时，改为选中商品
+            if("false" == selectit){
+                $(this).attr("src", "http://how2j.cn/tmall/img/site/cartSelected.png");
+                $(this).attr("selectit", "true");
+                //选中商品后，修改该订单项所在tr的背景色
+                $(this).parents("tr.cartProductItemTR").css("background-color", "#FFF8E1");
+            }
+            //当商品本身被选中时，改为取消选中商品
+            else {
+                $(this).attr("src", "http://how2j.cn/tmall/img/site/cartNotSelected.png");
+                $(this).attr("selectit", "false");
+                $(this).parents("tr.cartProductItemTR").css("background-color", "#fff");
+            }
+            syncSelect();   //判定全选键是否要点亮与关闭
+            syncCreateOrderButton();    //判断“结算”按键是否要点亮或关闭
+            calcCartSumPriceAndNumber();    //总价与总数目更新
+        });
+
+        //2.有两个全选键，“全选”按键按下时的动态变化：全选键自身变化、所有订单项选择变化、总价栏变化、总商品数变化
+        $("img.selectAllItem").click(function () {
+            var selectit = $(this).attr("selectit");
+            //当全选键本身没被选中时，改为全选商品
+            if("false" == selectit){
+                //有两个全选键，不能用$(this)获取
+                $("img.selectAllItem").attr("src", "http://how2j.cn/tmall/img/site/cartSelected.png");
+                $("img.selectAllItem").attr("selectit", "true");
+                //全选中商品后，所有订单项所在tr的背景色变色，选中项变化，选中属性修改
+                $("img.cartProductItemIfSelected").each(function () {
+                    $(this).parents("tr.cartProductItemTR").css("background-color", "#FFF8E1");
+                    $(this).attr("src", "http://how2j.cn/tmall/img/site/cartSelected.png");
+                    $(this).attr("selectit", "true");
+                });
+            }
+            else {
+                $("img.selectAllItem").attr("src", "http://how2j.cn/tmall/img/site/cartNotSelected.png");
+                $("img.selectAllItem").attr("selectit", "false");
+                $("img.cartProductItemIfSelected").each(function () {
+                    $(this).parents("tr.cartProductItemTR").css("background-color", "#fff");
+                    $(this).attr("src", "http://how2j.cn/tmall/img/site/cartNotSelected.png");
+                    $(this).attr("selectit", "false");
+                });
+            }
+            syncCreateOrderButton();    //判断“结算”按键是否要点亮或关闭
+            calcCartSumPriceAndNumber();    //总价与总数目更新
+        });
+
+        //3.1点击增加数量
+        $(".numberPlus").click(function () {
+            var pid = $(this).attr("pid");
+            var stock = $(".orderItemStock[pid="+pid+"]").text();
+            var number = $("input.orderItemNumberSetting[pid="+pid+"]").val();
+            var price = $(".orderItemPromotePrice[pid="+pid+"]").text();
+            number++;
+            if(number > stock){
+                number = stock;
+            }
+            $("input.orderItemNumberSetting[pid="+pid+"]").val(number);
+            syncPrice(pid, number, price);
+//            calcCartSumPriceAndNumber();
+        });
+        //3.2点击减少数量
+        $(".numberMinus").click(function () {
+            var pid = $(this).attr("pid");
+            var stock = $(".orderItemStock[pid="+pid+"]").text();
+            var number = $("input.orderItemNumberSetting[pid="+pid+"]").val();
+            var price = $(".orderItemPromotePrice[pid="+pid+"]").text();
+            number--;
+            if(number <= 0){
+                number = 1;
+            }
+            $("input.orderItemNumberSetting[pid="+pid+"]").val(number);
+            syncPrice(pid, number, price);
+//            calcCartSumPriceAndNumber();
+        });
+        
+        //4.键盘输入改变数量
+        $("input.orderItemNumberSetting").keyup(function () {
+            var pid = $(this).attr("pid");
+            var stock = $(".orderItemStock[pid="+pid+"]").text();
+            var price = $(".orderItemPromotePrice[pid="+pid+"]").text();
+
+            //判断非字符
+            var number = $(this).val();
+            number = parseInt(number);
+            if(isNaN(number)){
+                number = 1;
+            }
+            if(number <= 0){
+                number = 1;
+            }
+            if(number >= stock){
+                number = stock;
+            }
+//            $(this).attr("value", number);
+            syncPrice(pid, number, price);
+            calcCartSumPriceAndNumber();
+        });
+    });
+</script>
+</html>
