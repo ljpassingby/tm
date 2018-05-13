@@ -41,6 +41,7 @@ public abstract class BaseBackServlet extends HttpServlet {
             String method = (String) request.getAttribute("method");
             Method m = this.getClass().getMethod(method, javax.servlet.http.HttpServletRequest.class,
                     javax.servlet.http.HttpServletResponse.class, tmall.util.Page.class);
+            //这个invoke不能返回null，因为后面还有个.toString()，若返回null这里会报错
             String redirect = m.invoke(this, request, response, page).toString();
 
             //根据方法的返回值redirect，产生不同的页面跳转
