@@ -28,9 +28,9 @@ public class CategoryServlet extends BaseBackServlet {
     }
 
     @Override
-    public String get(HttpServletRequest request, HttpServletResponse response, Page page) {
-        System.out.println("get");
-        return "get";
+    public String edit(HttpServletRequest request, HttpServletResponse response, Page page) {
+        System.out.println("edit");
+        return "edit";
     }
 
     @Override

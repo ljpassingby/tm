@@ -4,6 +4,6 @@ public class TestJava {
     public static void main(String[] args){
         char[] cs = {'2','a',' ','3'};
         System.out.println(new String(cs));
-        System.out.println("345");
+        System.out.println("456");
     }
 }

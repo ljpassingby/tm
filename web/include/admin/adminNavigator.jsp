@@ -1,4 +1,4 @@
-<%--被用于include嵌入，是admin页面的头--%>
+<%--被用于include嵌入，是admin页面的标题栏，有点击选项和天猫标志--%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"
     pageEncoding="UTF-8" isELIgnored="false" %>
 <html>
