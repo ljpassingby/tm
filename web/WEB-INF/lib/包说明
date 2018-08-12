@@ -1,0 +1,28 @@
+commons-fileupload-1.2.2.jar和commons-io-1.4.jar用于servlet上传文件或图片
+            DiskFileItemFactory factory = new DiskFileItemFactory();
+            // 设置上传文件的大小限制为1M
+            factory.setSizeThreshold(1024 * 1024);
+            ServletFileUpload upload = new ServletFileUpload(factory);
+
+            List items = null;
+            try {
+                items = upload.parseRequest(request);
+            } catch (FileUploadException e) {
+                e.printStackTrace();
+            }
+            Iterator iter = items.iterator();
+            while(iter.next()){
+                FileItem item = (FileItem) iter.next();
+                //来判断是否是常规字段还是提交的文件。 当item.isFormField返回true的时候，就表示是常规字段，若是非常规字段，如file类型，则返回false。
+                //而且因为浏览器指定了以二进制的形式提交数据，那么就不能通过常规的手段获取非File字段，即通过request.getParameter("参数名")
+                if (!item.isFormField()) {
+                    // 通过item.getInputStream()获取浏览器上传的文件的输入流
+                    InputStream is = item.getInputStream();
+                }else{
+                    //这里读的是其他普通request里的参数
+                    String param = item.getFieldName(); //参数名
+                    String value = item.getString();    //该参数名对应的参数值
+                    value = new String(value.getBytes("ISO-8859-1"), "UTF-8");
+                }
+            }
+commons-lang-2.5.jar用于调用它的StringUtils方法方便对字符串对象进行处理
