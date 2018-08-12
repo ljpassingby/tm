@@ -144,6 +144,56 @@ public class OrderDAO {
         return bean;
     }
 
+    public List<Order> list(){
+        return list(0, Short.MAX_VALUE);
+    }
+
+    public List<Order> list(int start, int count){
+        List<Order> beans = new ArrayList<Order>();
+        String sql = "select * from order_ order by id limit ?,?";
+        try (Connection c = DBUtil.getConnection();PreparedStatement ps = c.prepareStatement(sql);){
+            ps.setInt(1, start);
+            ps.setInt(2, count);
+
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()){
+                Order bean = new Order();
+                String orderCode =rs.getString("orderCode");
+                String address = rs.getString("address");
+                String post = rs.getString("post");
+                String receiver = rs.getString("receiver");
+                String mobile = rs.getString("mobile");
+                String userMessage = rs.getString("userMessage");
+                String status = rs.getString("status");
+                Date createDate = DateUtil.t2d( rs.getTimestamp("createDate"));
+                Date payDate = DateUtil.t2d( rs.getTimestamp("payDate"));
+                Date deliveryDate = DateUtil.t2d( rs.getTimestamp("deliveryDate"));
+                Date confirmDate = DateUtil.t2d( rs.getTimestamp("confirmDate"));
+                int uid =rs.getInt("uid");
+
+                int id = rs.getInt("id");
+                bean.setId(id);
+                bean.setOrderCode(orderCode);
+                bean.setAddress(address);
+                bean.setPost(post);
+                bean.setReceiver(receiver);
+                bean.setMobile(mobile);
+                bean.setUserMessage(userMessage);
+                bean.setCreateDate(createDate);
+                bean.setPayDate(payDate);
+                bean.setDeliveryDate(deliveryDate);
+                bean.setConfirmDate(confirmDate);
+                User user = new UserDAO().get(uid);
+                bean.setUser(user);
+                bean.setStatus(status);
+                beans.add(bean);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return beans;
+    }
+
     //查询指定用户的订单(去掉某种订单状态excludedStatus，通常是"delete")
     public List<Order> list(int uid,String excludedStatus) {
         return list(uid,excludedStatus,0, Short.MAX_VALUE);

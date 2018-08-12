@@ -1,5 +1,7 @@
 package tmall.bean;
 
+import tmall.dao.OrderDAO;
+
 import java.util.Date;
 import java.util.List;
 
@@ -9,10 +11,10 @@ public class Order {
     private int id;
     private String orderCode;   //订单编号
     private String address;     //订单地址
-    private String post;        //
-    private String receiver;
+    private String post;        //邮编
+    private String receiver;    //买家名称
     private String mobile;      //用户手机号
-    private String userMessage;
+    private String userMessage; //买家备注信息
     private Date createDate;    //创建订单时间
     private Date payDate;       //支付时间
     private Date deliveryDate;  //发货时间
@@ -23,7 +25,7 @@ public class Order {
     //非数据库相关
     private List<OrderItem> orderItems;
     private float total;        //订单总金额
-    private float totalNumber;  //订单项总数量
+    private int totalNumber;  //订单项总数量
 
     //数据库相关
     public int getId() {
@@ -147,37 +149,37 @@ public class Order {
         this.total = total;
     }
 
-    public float getTotalNumber() {
+    public int getTotalNumber() {
         return totalNumber;
     }
 
-    public void setTotalNumber(float totalNumber) {
+    public void setTotalNumber(int totalNumber) {
         this.totalNumber = totalNumber;
     }
 
     public String getStatusDesc(){
         String desc ="未知";
         switch(status){
-//          case OrderDAO.waitPay:
-//              desc="待付款";
-//              break;
-//          case OrderDAO.waitDelivery:
-//              desc="待发货";
-//              break;
-//          case OrderDAO.waitConfirm:
-//              desc="待收货";
-//              break;
-//          case OrderDAO.waitReview:
-//              desc="等评价";
-//              break;
-//          case OrderDAO.finish:
-//              desc="完成";
-//              break;
-//          case OrderDAO.delete:
-//              desc="刪除";
-//              break;
-//          default:
-//              desc="未知";
+          case OrderDAO.waitPay:
+              desc="待付款";
+              break;
+          case OrderDAO.waitDelivery:
+              desc="待发货";
+              break;
+          case OrderDAO.waitConfirm:
+              desc="待收货";
+              break;
+          case OrderDAO.waitReview:
+              desc="等评价";
+              break;
+          case OrderDAO.finish:
+              desc="完成";
+              break;
+          case OrderDAO.delete:
+              desc="刪除";
+              break;
+          default:
+              desc="未知";
         }
         return desc;
     }

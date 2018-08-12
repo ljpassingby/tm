@@ -208,7 +208,7 @@ public class OrderItemDAO {
     //计算一个订单order集合中每个订单order的总订单金额和总数量
     public void fill(List<Order> os) {
         for (Order o : os) {
-            List<OrderItem> ois=listByOrder(o.getId());
+            List<OrderItem> ois = listByOrder(o.getId());
             float total = 0;
             int totalNumber = 0;
             for (OrderItem oi : ois) {
@@ -222,10 +222,10 @@ public class OrderItemDAO {
     }
     //计算一个指定订单的总金额
     public void fill(Order o) {
-        List<OrderItem> ois=listByOrder(o.getId());
+        List<OrderItem> ois = listByOrder(o.getId());
         float total = 0;
         for (OrderItem oi : ois) {
-            total+=oi.getNumber()*oi.getProduct().getPromotePrice();
+            total += oi.getNumber() * oi.getProduct().getPromotePrice();
         }
         o.setTotal(total);
         o.setOrderItems(ois);

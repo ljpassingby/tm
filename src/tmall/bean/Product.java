@@ -8,7 +8,7 @@ public class Product {
     private int id;
     private String name; //设置标题
     private String subTitle;    //设置副标题
-    private float orignalPrice; //原价
+    private float OriginalPrice; //原价
     private float promotePrice; //特价
     private int stock;  //库存
     private Category category;  //匹配cid用
@@ -46,12 +46,12 @@ public class Product {
         this.subTitle = subTitle;
     }
 
-    public float getOrignalPrice() {
-        return orignalPrice;
+    public float getOriginalPrice() {
+        return OriginalPrice;
     }
 
-    public void setOrignalPrice(float orignalPrice) {
-        this.orignalPrice = orignalPrice;
+    public void setOriginalPrice(float OriginalPrice) {
+        this.OriginalPrice = OriginalPrice;
     }
 
     public float getPromotePrice() {

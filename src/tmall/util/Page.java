@@ -4,7 +4,7 @@ public class Page {
     private int start;  //开始位置
     private int count;  //每页显示的数量
     private int total;  //总共有多少条数据
-    private String param;   //参数
+    private String param;   //在对产品和属性页面进行分页查询的时候，这个param就是分类的cid，内容格式为"&cid=xx"
 
     public Page(int start, int count){
         super();
@@ -13,7 +13,8 @@ public class Page {
     }
 
     //计算出最后一页对应的数据总条数是从多少开始的
-    private int getLast(){
+    //注意一定要用public，因为这个方法在jsp中被el表达式通过${page.last访问}
+    public int getLast(){
         int last = 0;
         // 假设总数是50，是能够被5整除的，那么最后一页的开始就是45
         if(0 == total % count)
@@ -26,7 +27,7 @@ public class Page {
     }
     //判断是否还有下一页
     public boolean isHasNext(){
-        if (total == getLast())
+        if (start == getLast())
             return false;
         return true;
     }

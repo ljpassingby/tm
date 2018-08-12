@@ -42,7 +42,7 @@ public class ProductDAO {
         ) {
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getSubTitle());
-            ps.setFloat(3, bean.getOrignalPrice());
+            ps.setFloat(3, bean.getOriginalPrice());
             ps.setFloat(4, bean.getPromotePrice());
             ps.setInt(5, bean.getStock());
             ps.setInt(6, bean.getCategory().getId());
@@ -67,7 +67,7 @@ public class ProductDAO {
                 ){
             ps.setString(1, bean.getName());
             ps.setString(2, bean.getSubTitle());
-            ps.setFloat(3, bean.getOrignalPrice());
+            ps.setFloat(3, bean.getOriginalPrice());
             ps.setFloat(4, bean.getPromotePrice());
             ps.setInt(5, bean.getStock());
             ps.setInt(6, bean.getCategory().getId());
@@ -107,7 +107,7 @@ public class ProductDAO {
                 bean.setId(id);
                 bean.setName(rs.getString("name"));
                 bean.setSubTitle(rs.getString("subTitle"));
-                bean.setOrignalPrice(rs.getFloat("orignalPrice"));
+                bean.setOriginalPrice(rs.getFloat("orignalPrice"));
                 bean.setPromotePrice(rs.getFloat("promotePrice"));
                 bean.setStock(rs.getInt("stock"));
                 bean.setCreateDate(DateUtil.t2d(rs.getTimestamp("createDate")));
@@ -160,7 +160,7 @@ public class ProductDAO {
 
                 bean.setName(name);
                 bean.setSubTitle(subTitle);
-                bean.setOrignalPrice(orignalPrice);
+                bean.setOriginalPrice(orignalPrice);
                 bean.setPromotePrice(promotePrice);
                 bean.setStock(stock);
                 bean.setCreateDate(createDate);
@@ -206,7 +206,7 @@ public class ProductDAO {
 
                 bean.setName(name);
                 bean.setSubTitle(subTitle);
-                bean.setOrignalPrice(orignalPrice);
+                bean.setOriginalPrice(orignalPrice);
                 bean.setPromotePrice(promotePrice);
                 bean.setStock(stock);
                 bean.setCreateDate(createDate);
@@ -291,7 +291,7 @@ public class ProductDAO {
 
                 bean.setName(name);
                 bean.setSubTitle(subTitle);
-                bean.setOrignalPrice(orignalPrice);
+                bean.setOriginalPrice(orignalPrice);
                 bean.setPromotePrice(promotePrice);
                 bean.setStock(stock);
                 bean.setCreateDate(createDate);
