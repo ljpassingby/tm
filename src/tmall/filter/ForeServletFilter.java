@@ -36,6 +36,11 @@ public class ForeServletFilter implements Filter {
 
         String uri = request.getRequestURI();
         uri = StringUtils.remove(uri, contextPath);
+        if ("/".equals(uri)){
+            request.setAttribute("method", "home");
+            request.getRequestDispatcher("/foreServlet").forward(request, response);
+            return;
+        }
         if (uri.startsWith("/fore") && !uri.startsWith("/foreServlet")){
             String method = StringUtils.remove(uri, "/fore");
             request.setAttribute("method", method);

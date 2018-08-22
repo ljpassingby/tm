@@ -36,7 +36,7 @@ public class OrderServlet extends BaseBackServlet {
         order.setStatus(OrderDAO.waitConfirm);
         order.setDeliveryDate(new Date());
         orderDAO.update(order);
-        return "%admin_order_list";
+        return "@admin_order_list";
     }
 
     @Override

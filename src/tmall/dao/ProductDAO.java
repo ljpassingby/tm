@@ -273,7 +273,7 @@ public class ProductDAO {
                 Connection connection = DBUtil.getConnection();
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ){
-            ps.setString(1, keyword);
+            ps.setString(1, "%" + keyword.trim() + "%");
             ps.setInt(2, start);
             ps.setInt(3, end);
 

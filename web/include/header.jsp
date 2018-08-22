@@ -46,7 +46,8 @@ c通常用于条件判断和遍历;fmt用于格式化日期和货币;fn用于校
         }
 
         $(function () {
-            <!--切换商品详情和累计评价-->
+            <!--切换商品详情和累计评价,最开始先让评论栏隐藏，本质上两个都是同时加载出来的-->
+            $("div.productReviewDiv").hide();
             $("a.productDetailTopReviewLink").click(function () {
                 $("div.productDetailDiv").hide();
                 $("div.productReviewDiv").show();
@@ -56,6 +57,7 @@ c通常用于条件判断和遍历;fmt用于格式化日期和货币;fn用于校
                 $("div.productDetailDiv").show();
             });
 
+            <!--这个是结算页面点击买家留言窗口的响应功能-->
             $("span.leaveMessageTextareaSpan").hide();
             $("img.leaveMessageImg").click(function(){
 
@@ -71,6 +73,7 @@ c通常用于条件判断和遍历;fmt用于格式化日期和货币;fn用于校
             $("a.wangwanglink").click(function(){
                 alert("模仿旺旺的图标，并不会打开旺旺");
             });
+//            这个是点击“忘记密码”操作时的功能函数
             $("a.notImplementLink").click(function(){
                 alert("这个功能没做，蛤蛤~");
             });

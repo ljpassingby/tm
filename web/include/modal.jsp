@@ -8,6 +8,9 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8"
          pageEncoding="UTF-8" isELIgnored="false"%>
 
+<%--用户登录的模态窗口，默认情况是隐藏的，通过：
+$("#loginModal").modal('show')与$("#loginModal").modal('show')进行显示与隐藏
+--%>
 <div class="modal " id="loginModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog loginDivInProductPageModalDiv">
         <div class="modal-content">
@@ -46,6 +49,11 @@
     </div>
 </div>
 
+<%--用户删除订单项的模态窗口，默认情况是隐藏的,通过：
+$("#deleteConfirmModal").modal('show')与$("#deleteConfirmModal").modal('hide')进行显示或隐藏;
+
+$('#deleteConfirmModal').on('hidden.bs.modal', function (e) {});表示在模态窗口hide时调用
+--%>
 <div class="modal" id="deleteConfirmModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog deleteConfirmModalDiv">
         <div class="modal-content">
@@ -59,5 +67,4 @@
             </div>
         </div>
     </div>
-</div>
 </div>

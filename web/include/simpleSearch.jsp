@@ -6,7 +6,7 @@
     </a>
     <form action="foresearch" method="post">
         <div class="simpleSearchDiv pull-right">
-            <input type="text" placeholder="平衡车 原汁机" name="keyword"/>
+            <input type="text" placeholder="平衡车 原汁机" name="keyword" value="${param.keyword}"/>
             <button type="submit" class="searchButton">搜天猫</button>
             <div class="searchBelow">
                 <%--迭代生成4个推荐产品分类，至于哪4个，由下面的st.count决定--%>

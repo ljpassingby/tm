@@ -101,6 +101,10 @@ public class ReviewDAO {
         return bean;
     }
 
+    public List<Review> list(int pid) {
+        return list(pid, 0 , Short.MAX_VALUE);
+    }
+
     //获取指定产品的评论，分页查询
     //这里和propertvalue一样，作为产品和用户的多对多关系的第三中间人，因此在指定product下，评论对应多个用户
     public List<Review> list(int pid, int start, int count) {

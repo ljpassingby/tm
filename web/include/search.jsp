@@ -11,7 +11,7 @@
         </a>
         <form action="foresearch" method="post">
             <div class="searchDiv">
-                <input type="text" placeholder="时尚男鞋  太阳镜" name="keyword" />
+                <input type="text" placeholder="时尚男鞋  太阳镜" name="keyword" value="${param.keyword}" />
                 <button type="submit" class="searchButton">搜索</button>
                 <div class="searchBelow">
                     <%--迭代生成4个推荐产品分类，至于哪4个，由下面的st.count决定--%>

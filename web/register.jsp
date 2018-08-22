@@ -3,7 +3,7 @@
 <%@ include file="include/header.jsp"%>
 <%@ include file="include/top.jsp"%>
 <%@ include file="include/simpleSearch.jsp"%>
-<%@ include file="include/registerPage.jsp"%>
+<%@ include file="include/index/registerPage.jsp"%>
 <%@ include file="include/foot.jsp"%>
 
 <html>
